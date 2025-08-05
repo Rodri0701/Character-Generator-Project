@@ -1,4 +1,4 @@
-# Character Generator Project
+# Character Generator Project (My solution)
 
 Application to customize and create your very own character.
 
