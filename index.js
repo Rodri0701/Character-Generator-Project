@@ -13,11 +13,13 @@ console.log("Check out more projects at https://bigdevsoon.me");
 document.addEventListener("DOMContentLoaded", () => {
   const contenedor = document.getElementById("contenedor-imagenes");
   const botones = document.querySelectorAll("button[data-categoria]");
+  const mensajedinamico = document.getElementById("mensaje");
   const cajaPersonaje = document.querySelector(".basis-2\\/5"); // caja gris
 
   botones.forEach((btn) => {
     btn.addEventListener("click", function () {
       const categoria = btn.dataset.categoria;
+      mensajedinamico.textContent= `Cargando imagenes de la categoria ${categoria}`;
       console.log(categoria);
 
       contenedor.innerHTML = "";
@@ -33,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         img.onload = () => {
           erroresSeguidos = 0; // reset si carga
           contenedor.appendChild(img);
-
+          mensajedinamico.textContent= `Showing images of ${categoria}`;
           // Animación al hacer click
           img.addEventListener("click", () => {
             const imgRect = img.getBoundingClientRect();
@@ -74,7 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-
 
 
 

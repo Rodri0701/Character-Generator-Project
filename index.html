@@ -20,25 +20,32 @@
 
 
 
-  <div class="max-w-5xl mx-auto bg-white border-2 border-gray-200 rounded-xl shadow-inner p-0 h-[500px] flex items-center px-4">
+  <div class=" w-full mx-auto bg-white border-2 border-gray-400 rounded-xl shadow-inner p-0 h-[500px] flex items-center px-0">
   
     
     <!-- Caja izquierda -->
+    
+ <div class=" bg-white rounded-lg ml-4 h-full justify-center items-center">
+<br>
     <!-- Texto superior dinamico -->
-       <div class="items-center justify-center flex-col">
-       <p id="mensaje" class="text-lg font-bold text-gray-800 mb-4 text-center">Loading...</p>
+       <div class="items-center justify-center  bg-white rounded-2xl h-24 ">
+       <p id="mensaje" class="text-lg font-bold text-gray-800 mb-4 text-center"></p>
+       </div>
+
         <!-- Caja inferior del personaje -->
-      <div class="basis-2/5 h-100 bg-gray-400 rounded-2xl mr-4 p-0 items-center flex-col">
-       
-      <h2 class="text-2xl font-bold text-gray-800 text-center">Character </h2>
-      <div class="flex flex-col items-center justify-center h-full  ">
-        <img src="./assets/character-images-left-side/default/basic-character.png" class=" w-60 h-full object-cover " />
-      </div>
+    <div class="flex justify-center items-center gap-2 h-64">
+  <div class="bg-gray-400  items-center justify-center h-[500]">
+    <h2 class="text-2xl font-bold text-gray-800 text-center">Character</h2>
+    <div class="flex flex-col items-center justify-center h-full ">
+      <img src="./assets/character-images-left-side/default/basic-character.png" class="w-full items-center object-cover" />
     </div>
+  </div>
+</div>
+ 
     </div>
 
     <!-- Caja derecha -->
-    <div class="basis-3/5 bg-white rounded-lg ml-4 h-full overflow-auto p-4">
+    <div class=" bg-white rounded-lg ml-4 h-full overflow-auto  w-full">
       <h2 class="text-2xl font-semibold text-center font-sans text-blue-600 mb-4">Customize Look</h2>
       <!-- Opciones -->
       <div class="flex items-center justify-center">
