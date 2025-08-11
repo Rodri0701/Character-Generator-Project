@@ -53,13 +53,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             clone.getBoundingClientRect(); // forzar render
 
-            clone.style.left = boxRect.left + (boxRect.width - imgRect.width) / 2 + "px";
-            clone.style.top = boxRect.top + (boxRect.height - imgRect.height) / 2 + "px";
-            clone.style.transform = "scale(0.5)";
-            clone.style.opacity = "0.5";
+              // Mover clon a la caja gris
+  clone.style.left = boxRect.left + (boxRect.width - imgRect.width) / 2 + "px";
+  clone.style.top = boxRect.top + (boxRect.height - imgRect.height) / 2 + "px";
+  clone.style.transform = "scale(0.5)";
+  clone.style.opacity = "0.5";
 
-            clone.addEventListener("transitionend", () => {
-              clone.remove();
+clone.addEventListener("transitionend", () => {
+  // Actualizar la capa correspondiente según la categoría
+  const layer = document.getElementById(`layer-${categoria}`);
+  if (layer) {
+    layer.src = img.src;
+  }
+  clone.remove();
             });
           });
         };
