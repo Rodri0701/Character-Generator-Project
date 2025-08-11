@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const img = new Image();
         img.src = `./assets/character-images-left-side/${categoria}/${i}.png`;
         img.alt = `${categoria} ${i}`;
-        img.className = "rounded-xl shadow-lg w-40 h-40 object-cover mb-4 cursor-pointer";
+        img.className = "rounded-2xl shadow-2xl w-40 h-40 object-cover mb-4 cursor-pointer bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 ";
 
         img.onload = () => {
           erroresSeguidos = 0; // reset si carga
