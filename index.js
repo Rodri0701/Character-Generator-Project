@@ -7,9 +7,6 @@ console.log("Check out more projects at https://bigdevsoon.me");
 
 
 /* Renderiza el doom ya que cargaba primero el script luego el html */
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   const eleccion = {
   background: 0,
@@ -147,41 +144,68 @@ document.getElementById("downloadBtn").addEventListener("click", function () {
 
 
 
-/* eVENTO DE EMPTY*/
+
+// Evento de EMPTY
+colorPicker.addEventListener("input", (e) => {
+  selectedBackgroundColor = e.target.value;
+  const caja = document.querySelector(".basis-2\\/5 > div");
+  if (caja) caja.style.backgroundColor = selectedBackgroundColor;
+});
+
 document.getElementById('emptyBtn').addEventListener('click', () => {
   const contenedorPersonaje = document.querySelector('.basis-2\\/5');
   if (contenedorPersonaje) {
-    // Aquí remueves o reseteas las imágenes agregadas
     contenedorPersonaje.innerHTML = `
-      <h2 class="text-2xl font-bold text-gray-800 text-center">Character</h2>
-      <div class="flex flex-col items-center justify-center h-full">
-        <img src="./assets/character-images-left-side/default/basic-character.png" class="w-60 h-full object-cover" />
+      <div class="basis-2/5 relative w-60 h-80 rounded-2xl overflow-hidden" 
+           style="background-color: ${selectedBackgroundColor};">
+        <img src="./assets/character-images-left-side/default/basic-character.png" 
+             class="absolute top-0 left-0 w-full h-full object-cover" />
+        <!-- capas de personalización -->
+        <img id="layer-eyes" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
+        <img id="layer-hair" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
+        <img id="layer-ears" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
+        <img id="layer-nose" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
+        <img id="layer-mouth" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
+        <img id="layer-accessories" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
       </div>
     `;
+    inicializarEventosAccesorios();
   }
 });
+
+
+
 
 /* eVENTO DE Random */
 document.getElementById('randomBtn').addEventListener('click', () => {
   const categorias = ['eyes', 'background', 'hair', 'ears', 'nose', 'mouth', 'accessories'];
   const contenedorPersonaje = document.querySelector('.basis-2\\/5');
+
   if (!contenedorPersonaje) return;
 
   // Limpiar personaje actual
-  contenedorPersonaje.innerHTML = `<h2 class="text-2xl font-bold text-gray-800 text-center">Character</h2>`;
+  contenedorPersonaje.innerHTML = `
+    <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">
+      Character
+    </h2>
+    <div class="flex flex-wrap justify-center gap-4"></div>
+  `;
+
+  const contenedorImgs = contenedorPersonaje.querySelector('div');
 
   categorias.forEach(cat => {
-    // Número random, aquí asumo máximo 6 imágenes por categoría, cambia según tu caso
+    // Número random (ajusta el máximo a tus imágenes reales)
     const randomIndex = Math.floor(Math.random() * 6) + 1;
 
     const img = document.createElement('img');
     img.src = `./assets/character-images-left-side/${cat}/${randomIndex}.png`;
     img.alt = `${cat} ${randomIndex}`;
-    img.className = 'rounded-xl shadow-lg w-40 h-40 object-cover mb-4 cursor-pointer';
+    img.className = 'rounded-xl shadow-lg w-40 h-40 object-cover cursor-pointer';
 
-    contenedorPersonaje.appendChild(img);
+    contenedorImgs.appendChild(img);
   });
 });
+
 
 });
 
