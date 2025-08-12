@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   botones.forEach((btn) => {
     btn.addEventListener("click", function () {
       const categoria = btn.dataset.categoria;
-      mensajedinamico.textContent= `Cargando imagenes de la categoria ${categoria}`;
+      mensajedinamico.textContent= `Loading images of ${categoria}`;
       console.log(categoria);
       
       contenedor.innerHTML = "";
