@@ -151,7 +151,7 @@ colorPicker.addEventListener("input", (e) => {
   const caja = document.querySelector(".basis-2\\/5 > div");
   if (caja) caja.style.backgroundColor = selectedBackgroundColor;
 });
-
+// Evento de EMPTY
 document.getElementById('emptyBtn').addEventListener('click', () => {
   const contenedorPersonaje = document.querySelector('.basis-2\\/5');
   if (contenedorPersonaje) {
@@ -169,7 +169,7 @@ document.getElementById('emptyBtn').addEventListener('click', () => {
         <img id="layer-accessories" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
       </div>
     `;
-    inicializarEventosAccesorios();
+  
   }
 });
 
@@ -177,34 +177,85 @@ document.getElementById('emptyBtn').addEventListener('click', () => {
 
 
 /* eVENTO DE Random */
-document.getElementById('randomBtn').addEventListener('click', () => {
-  const categorias = ['eyes', 'background', 'hair', 'ears', 'nose', 'mouth', 'accessories'];
-  const contenedorPersonaje = document.querySelector('.basis-2\\/5');
 
+// helpers: comprobar existencia de imagen y listar índices válidos
+function existsImage(src) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = src;
+  });
+}
+
+async function listAvailableIndices(cat, max = 6) {
+  const arr = [];
+  for (let i = 1; i <= max; i++) {
+    const src = `./assets/character-images-left-side/${cat}/${i}.png`;
+    // espera la comprobación
+    // (si tienes muchas imágenes o performance importa, reduce max)
+    if (await existsImage(src)) arr.push(i);
+  }
+  return arr;
+}
+
+function randomHexColor() {
+  return '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0');
+}
+
+
+document.getElementById('randomBtn').addEventListener('click', async () => {
+  const categorias = ['eyes', 'hair', 'ears', 'nose', 'mouth', 'accessories'];
+  const maxIntentos = 6; // ajustar si tienes más por categoría
+  const contenedorPersonaje = document.querySelector('.basis-2\\/5');
   if (!contenedorPersonaje) return;
 
-  // Limpiar personaje actual
-  contenedorPersonaje.innerHTML = `
-    <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">
-      Character
-    </h2>
-    <div class="flex flex-wrap justify-center gap-4"></div>
-  `;
+  // Asegurarnos de que la caja tenga la estructura de capas (igual que en empty)
+  // Si no existe el layer-eyes, reconstruimos la estructura
+  if (!document.getElementById('layer-eyes')) {
+    contenedorPersonaje.innerHTML = `
+      <div class="basis-2/5 relative w-60 h-80 rounded-2xl overflow-hidden" 
+           style="background-color: ${selectedBackgroundColor ?? '#D9D9D9'};">
+        <img src="./assets/character-images-left-side/default/basic-character.png" class="absolute top-0 left-0 w-full h-full object-cover" />
+        <img id="layer-eyes" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
+        <img id="layer-hair" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
+        <img id="layer-ears" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
+        <img id="layer-nose" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
+        <img id="layer-mouth" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
+        <img id="layer-accessories" class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" />
+      </div>
+    `;
+  }
 
-  const contenedorImgs = contenedorPersonaje.querySelector('div');
+  // Generar color de fondo aleatorio y aplicarlo
+  const nuevoColor = randomHexColor();
+  selectedBackgroundColor = nuevoColor;          // variable global que usas para descarga
+  const cajaInterior = contenedorPersonaje.querySelector('.relative') || contenedorPersonaje.querySelector('.basis-2\\/5') || contenedorPersonaje.firstElementChild;
+  if (cajaInterior) cajaInterior.style.backgroundColor = nuevoColor;
+  // si tienes un input color visible, sincronízalo:
+  const colorPicker = document.getElementById('colorPicker');
+  if (colorPicker) colorPicker.value = nuevoColor;
 
-  categorias.forEach(cat => {
-    // Número random (ajusta el máximo a tus imágenes reales)
-    const randomIndex = Math.floor(Math.random() * 6) + 1;
+  // Para cada categoría buscamos índices válidos y elegimos uno al azar (si existen)
+  for (const cat of categorias) {
+    const validos = await listAvailableIndices(cat, maxIntentos);
+    if (validos.length > 0) {
+      const choice = validos[Math.floor(Math.random() * validos.length)];
+      eleccion[cat] = choice; // actualizar el objeto global
+      const layerEl = document.getElementById(`layer-${cat}`);
+      if (layerEl) layerEl.src = `./assets/character-images-left-side/${cat}/${choice}.png`;
+    } else {
+      // ninguna imagen disponible -> limpiamos capa y elección
+      eleccion[cat] = 0;
+      const layerEl = document.getElementById(`layer-${cat}`);
+      if (layerEl) layerEl.src = '';
+    }
+  }
 
-    const img = document.createElement('img');
-    img.src = `./assets/character-images-left-side/${cat}/${randomIndex}.png`;
-    img.alt = `${cat} ${randomIndex}`;
-    img.className = 'rounded-xl shadow-lg w-40 h-40 object-cover cursor-pointer';
-
-    contenedorImgs.appendChild(img);
-  });
+  // Mensaje al usuario
+  if (mensajedinamico) mensajedinamico.textContent = 'Random character generated!';
 });
+
 
 
 });
