@@ -11,6 +11,15 @@ console.log("Check out more projects at https://bigdevsoon.me");
 
 
 document.addEventListener("DOMContentLoaded", () => {
+  const eleccion = {
+  background: 0,
+  ears: 0,
+  hair: 0,
+  eyes: 0,
+  nose: 0,
+  mouth: 0,
+  accessories: 0
+};
   const contenedor = document.getElementById("contenedor-imagenes");
   const botones = document.querySelectorAll("button[data-categoria]");
   const mensajedinamico = document.getElementById("mensaje");
@@ -21,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const categoria = btn.dataset.categoria;
       mensajedinamico.textContent= `Cargando imagenes de la categoria ${categoria}`;
       console.log(categoria);
-
+      
       contenedor.innerHTML = "";
       let erroresSeguidos = 0;
       const maxIntentos = 6;
@@ -40,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
           img.addEventListener("click", () => {
             const imgRect = img.getBoundingClientRect();
             const boxRect = cajaPersonaje.getBoundingClientRect();
-
+            eleccion[categoria] = i; // el índice de la imagen clickeada
             const clone = img.cloneNode();
             clone.style.position = "fixed";
             clone.style.left = imgRect.left + "px";
@@ -81,6 +90,99 @@ clone.addEventListener("transitionend", () => {
       }
     });
   });
+
+  /* Evento del background  */
+let selectedBackgroundColor = "#D9D9D9"; // color inicial por defecto
+
+const colorPicker = document.getElementById("colorPicker");
+// la caja gris
+
+colorPicker.addEventListener("input", (e) => {
+  selectedBackgroundColor = e.target.value;
+  cajaPersonaje.style.backgroundColor = selectedBackgroundColor;
+});
+
+
+  /* Evento de descargar */
+document.getElementById("downloadBtn").addEventListener("click", function () {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  // Ajusta el tamaño de la imagen final
+  canvas.width = 600;  
+  canvas.height = 800; 
+
+  // Fondo degradado
+  ctx.fillStyle = selectedBackgroundColor;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const layers = [
+    "./assets/character-images-left-side/default/basic-character.png",
+    document.getElementById("layer-eyes").src,
+    document.getElementById("layer-hair").src,
+    document.getElementById("layer-ears").src,
+    document.getElementById("layer-nose").src,
+    document.getElementById("layer-mouth").src,
+    document.getElementById("layer-accessories").src
+  ].filter(src => src);
+
+  let loaded = 0;
+
+  layers.forEach((src) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = src;
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      loaded++;
+      if (loaded === layers.length) {
+        const link = document.createElement("a");
+        link.download = "character.png";
+        link.href = canvas.toDataURL();
+        link.click();
+      }
+    };
+  });
+});
+
+
+
+/* eVENTO DE EMPTY*/
+document.getElementById('emptyBtn').addEventListener('click', () => {
+  const contenedorPersonaje = document.querySelector('.basis-2\\/5');
+  if (contenedorPersonaje) {
+    // Aquí remueves o reseteas las imágenes agregadas
+    contenedorPersonaje.innerHTML = `
+      <h2 class="text-2xl font-bold text-gray-800 text-center">Character</h2>
+      <div class="flex flex-col items-center justify-center h-full">
+        <img src="./assets/character-images-left-side/default/basic-character.png" class="w-60 h-full object-cover" />
+      </div>
+    `;
+  }
+});
+
+/* eVENTO DE Random */
+document.getElementById('randomBtn').addEventListener('click', () => {
+  const categorias = ['eyes', 'background', 'hair', 'ears', 'nose', 'mouth', 'accessories'];
+  const contenedorPersonaje = document.querySelector('.basis-2\\/5');
+  if (!contenedorPersonaje) return;
+
+  // Limpiar personaje actual
+  contenedorPersonaje.innerHTML = `<h2 class="text-2xl font-bold text-gray-800 text-center">Character</h2>`;
+
+  categorias.forEach(cat => {
+    // Número random, aquí asumo máximo 6 imágenes por categoría, cambia según tu caso
+    const randomIndex = Math.floor(Math.random() * 6) + 1;
+
+    const img = document.createElement('img');
+    img.src = `./assets/character-images-left-side/${cat}/${randomIndex}.png`;
+    img.alt = `${cat} ${randomIndex}`;
+    img.className = 'rounded-xl shadow-lg w-40 h-40 object-cover mb-4 cursor-pointer';
+
+    contenedorPersonaje.appendChild(img);
+  });
+});
+
 });
 
 

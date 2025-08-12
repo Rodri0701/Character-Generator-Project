@@ -59,9 +59,16 @@
   <button data-categoria="eyes" class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-xl">
     Eye
   </button>
-  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-xl">
-    Background
-  </button>
+<!-- Input color oculto -->
+<input type="color" id="colorPicker" class="hidden">
+
+<!-- Botón que abre el selector de color -->
+<label for="colorPicker" 
+       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-xl cursor-pointer">
+  Background
+</label>
+
+  
   <button data-categoria="hair" class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-xl">
     Hair
   </button>
@@ -92,17 +99,17 @@
 
 <!-- Div para los botones de guardar y cancelar y random -->
       <div class="flex items-center justify-center h-20 space-x-4 px-0 py-1 ">
-  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-xl flex items-center gap-2 flex-wrap justify-center">
+  <button id = "downloadBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-xl flex items-center gap-2 flex-wrap justify-center">
     <img src="./assets/icons/download-icon.svg" class="w-5 h-5">
     <span class="break-words"> Donwload</span>
      
   </button>
-   <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-xl flex items-center gap-2 flex-wrap justify-center">
+   <button id="emptyBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-xl flex items-center gap-2 flex-wrap justify-center">
     <img src="./assets/icons/empty-icon.svg" class="w-5 h-5" >
     <span class="break-words">Empty</span>
    </button>  
 
- <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-xl flex items-center gap-2 flex-wrap justify-center">
+ <button id="randomBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-xl flex items-center gap-2 flex-wrap justify-center">
   <img src="./assets/icons/random-icon.svg" class="w-5 h-5">
   <span class="break-words">Random</span>
 </button>
